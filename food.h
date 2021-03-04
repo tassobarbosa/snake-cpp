@@ -26,6 +26,14 @@ public:
     refresh();
   }
 
+  int get_food_posx(){
+    return pos_x;
+  }
+
+  int get_food_posy(){
+    return pos_y;
+  }
+
   ~Food(){
 
   }

@@ -6,21 +6,31 @@ private:
   int pos_x;
   int pos_y;
   char snake_draw;
-  int default_size;
+
 public:
-  Snake(){
-    pos_x = getmaxx(stdscr)/4;
-    pos_y = getmaxy(stdscr)/4;
+  Snake(int s_col, int s_row){
+    pos_x = s_col;
+    pos_y = s_row;
     snake_draw = 'o';
-    default_size = 5;
 
-    for(int i=0;i<default_size;i++){
-      print_snake(pos_y, pos_x+i);
-    }
-
+    set_position(pos_y, pos_x);
   }
 
-  void print_snake(int col, int row);
+  void set_position(int col, int row){
+    pos_x = row;
+    pos_y = col;
+    move(pos_y, pos_x);
+    addch(snake_draw);
+    refresh();
+  }
+
+  int get_snake_posx(){
+    return pos_x;
+  }
+
+  int get_snake_posy(){
+    return pos_y;
+  }
 
   ~Snake(){
 

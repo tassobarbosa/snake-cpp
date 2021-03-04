@@ -7,10 +7,6 @@ private:
 
 public:
   Screen(){
-    initscr();
-    noecho();
-    nodelay(stdscr, true);
-    curs_set(0);
     height = getmaxy(stdscr)/2;
     width = getmaxx(stdscr)/2;
 
@@ -25,10 +21,14 @@ public:
     void linha_esquerda();
     void linha_direita();
 
+    void cria_tela(){
+      linha_superior();
+      linha_inferior();
+      linha_esquerda();
+      linha_direita();
+    }
+
   ~Screen(){
-    nodelay(stdscr, false);
-    getch();
-    endwin();
   }
 
 };
