@@ -5,7 +5,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 
-void game_over(char *snake_direction){
+void game_over(char *snake_direction, int *score){
   *snake_direction = 'q';
   clear();
   Screen screen2;
@@ -13,6 +13,11 @@ void game_over(char *snake_direction){
   int width = getmaxx(stdscr)/6;
   move(height,width);
   printw("GAME OVER");
+  move(height+1, width);
+  printw("Your score: ");
+  printw("%d", *score);
+  nodelay(stdscr, false); //não parar em getch()
+  if(getch()) endwin();  
 }
 
 void print_score(int *score){
@@ -80,18 +85,27 @@ int main(){
     if(snake_direction=='D') snake.insert(snake.begin(),Snake(snake[0].get_snake_posx(), snake[0].get_snake_posy()+1));
 
     //colisao parede
-    if(snake[0].get_snake_posy() == screen.get_screen_top()) game_over(&snake_direction);
-    if(snake[0].get_snake_posy() == screen.get_screen_bottom()) game_over(&snake_direction);
-    if(snake[0].get_snake_posx() == screen.get_screen_left()) game_over(&snake_direction);
-    if(snake[0].get_snake_posx() == screen.get_screen_right()) game_over(&snake_direction);
+    if(snake[0].get_snake_posy() == screen.get_screen_top()) game_over(&snake_direction, &score);
+    if(snake[0].get_snake_posy() == screen.get_screen_bottom()) game_over(&snake_direction, &score);
+    if(snake[0].get_snake_posx() == screen.get_screen_left()) game_over(&snake_direction, &score);
+    if(snake[0].get_snake_posx() == screen.get_screen_right()) game_over(&snake_direction, &score);
 
     //colisao com comida
     if(snake[0].get_snake_posx()==food.get_food_posx() && snake[0].get_snake_posy()==food.get_food_posy()){
+      snake.push_back(Snake(snake[4].get_snake_posx(), snake[4].get_snake_posy()));
       food.print_food();
+
       score+=10;
       print_score(&score);
+
     }
 
+    //colisao com proprio corpo
+    for( size_t i = 2; i < snake.size() ; ++i ){
+      if( snake[0].get_snake_posx() == snake[i].get_snake_posx() && snake[0].get_snake_posy() == snake[i].get_snake_posy() ){
+        game_over(&snake_direction, &score);
+      }
+    }
 
 
     usleep(delay);
