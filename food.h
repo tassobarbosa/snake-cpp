@@ -13,14 +13,15 @@ private:
 public:
   Food(){
     srand(time(NULL));
-    pos_x = rand() % getmaxx(stdscr)/3;
-    pos_y = rand() % getmaxy(stdscr)/3;
+    pos_x = 0;
+    pos_y = 0;
     food_draw = 'X';
-
     print_food();
   }
 
   void print_food(){
+    pos_x = rand() % getmaxx(stdscr)/2;
+    pos_y = rand() % getmaxy(stdscr)/2;
     move(pos_y, pos_x);
     addch(food_draw);
     refresh();

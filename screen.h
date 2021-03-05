@@ -28,6 +28,22 @@ public:
       linha_direita();
     }
 
+    int get_screen_top(){
+      return 0;
+    }
+
+    int get_screen_bottom(){
+      return height;
+    }
+
+    int get_screen_left(){
+      return 0;
+    }
+
+    int get_screen_right(){
+      return width-1;
+    }
+
   ~Screen(){
   }
 
